@@ -1,8 +1,3 @@
 # stategraph
 
-A new Flutter project.
-
-## Getting Started
-
-For help getting started with Flutter, view our online
-[documentation](https://flutter.io/).
+An architecture for Flutter apps. See https://buildflutter.com/state-graph-architecture/
