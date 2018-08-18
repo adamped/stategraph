@@ -5,13 +5,14 @@ Response send(Request request) {
 
   // Send request over http
 
-  // Return response
+  // Return response - Example
   return Response("error", 404);
 }
 
 class Request {
-  final url;
-  const Request(this.url);
+  final String url;
+  final String token;
+  const Request(this.url, this.token);
 }
 
 class Response {

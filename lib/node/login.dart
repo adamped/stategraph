@@ -1,7 +1,6 @@
 import '../definitions.dart';
 import 'package:flutter/material.dart';
 import '../graph/stateGraph.dart';
-import '../repository/api.dart';
 import '../repository/account.dart';
 
 class DefaultLoginState implements IState {
@@ -12,6 +11,8 @@ class DefaultLoginState implements IState {
 class LoginErrorState extends DefaultLoginState {
   String loginErrorMessage = "There was an error";
 }
+
+typedef IState LoginFunction(LoginRequest loginRequest, String username, String password);
 
 class LoginNode {
   static Widget render(IState state) {
@@ -27,13 +28,14 @@ class LoginNode {
           textDirection: TextDirection.ltr,
           style: TextStyle(color: Colors.white),
         ),
-        onPressed: () => StateGraph.instance.applyLoginRequest(login, "username", "password"),
+        onPressed: () => StateGraph.instance.apply(login, "username", "password"),
       ));
   }
 
-  static IState login(LoginRequest loginRequest, HttpSend send, String username, String password) {
+
+  static IState login(LoginRequest loginRequest, String username, String password) {
         
-    final result = loginRequest(send, username, password);
+    final result = loginRequest(username, password);
 
     if (result == false)
     {

@@ -1,10 +1,11 @@
 import 'api.dart';
 
-typedef bool LoginRequest(String username, String password);
-bool loginRequestPartial(String username, String password) => login(send, username, password);
+LoginRequest authLoginRequest(String token, HttpSend send) => (username, password) => _login(send, token, username, password);
 
-bool login(HttpSend send, String username, String password) {
-  var request = Request("/v1/login");
+typedef bool LoginRequest(String username, String password);
+
+bool _login(HttpSend send, String token, String username, String password) {
+  var request = Request("/v1/login", token);
   // Add in username and password to request
 
   var response = send(request);

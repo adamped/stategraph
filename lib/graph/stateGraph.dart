@@ -1,8 +1,7 @@
 import '../definitions.dart';
-import '../repository/api.dart';
 import '../repository/account.dart';
-
-typedef IState HttpRequest(HttpSend httpSend);
+import '../node/login.dart';
+import '../repository/api.dart';
 
 class StateGraph
 {
@@ -21,7 +20,7 @@ class StateGraph
     _state.add(state);
   }
 
-  apply(IState state)
+  _apply(IState state)
   {
       if (state.branch == Branch.reverse)
           _state.removeAt(_state.length);
@@ -31,16 +30,14 @@ class StateGraph
      _triggerBuild();
   }
 
-
-  applyLoginRequest(IState command(LoginRequest loginRequest, String username, String password), String username, String password)
+  apply(LoginFunction command, String username, String password)
   {
-    apply(command(loginRequestPartial, username, password));
+    // Need to give HttpSend with additional state pass through here.
+    _apply(command(login("token", send), username, password));
   }
-
 
   IState current() {
     return _state[_state.length - 1];
   }
-
 
 }
