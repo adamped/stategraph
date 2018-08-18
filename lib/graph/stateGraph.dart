@@ -1,26 +1,22 @@
 import '../definitions.dart';
-import '../repository/account.dart';
-import '../node/login.dart';
 import '../repository/api.dart';
 
 class StateGraph
 {
-  static StateGraph _instance = new StateGraph();
-  static StateGraph instance = _instance;
-  StateSet _triggerBuild;
+  static StateSet _triggerBuild;
 
-  List<IState> _state = new List<IState>();
-  initialize(StateSet setState)
+  static List<IState> _state = new List<IState>();
+  static initialize(StateSet setState)
   {
     _triggerBuild = setState;
   }
 
-  setInitialState(IState state)
+  static setInitialState(IState state)
   {
     _state.add(state);
   }
 
-  _apply(IState state)
+  static apply(IState state)
   {
       if (state.branch == Branch.reverse)
           _state.removeAt(_state.length);
@@ -30,13 +26,10 @@ class StateGraph
      _triggerBuild();
   }
 
-  apply(LoginFunction command, String username, String password)
-  {
-    // Need to give HttpSend with additional state pass through here.
-    _apply(command(login("token", send), username, password));
-  }
+  // Get token from state graph
+  static ApiState apiState() => ApiState(send, "token");
 
-  IState current() {
+  static IState current() {
     return _state[_state.length - 1];
   }
 

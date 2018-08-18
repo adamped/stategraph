@@ -12,7 +12,8 @@ class LoginErrorState extends DefaultLoginState {
   String loginErrorMessage = "There was an error";
 }
 
-typedef IState LoginFunction(LoginRequest loginRequest, String username, String password);
+typedef IState LoginFunction(
+    LoginRequest loginRequest, String username, String password);
 
 class LoginNode {
   static Widget render(IState state) {
@@ -28,17 +29,16 @@ class LoginNode {
           textDirection: TextDirection.ltr,
           style: TextStyle(color: Colors.white),
         ),
-        onPressed: () => StateGraph.instance.apply(login, "username", "password"),
+        onPressed: () => StateGraph
+            .apply(login(Account.login(StateGraph.apiState()), "username", "password")),
       ));
   }
 
-
-  static IState login(LoginRequest loginRequest, String username, String password) {
-        
+  static IState login(
+      LoginRequest loginRequest, String username, String password) {
     final result = loginRequest(username, password);
 
-    if (result == false)
-    {
+    if (result == false) {
       // Do some logic
       return LoginErrorState();
     }

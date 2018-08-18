@@ -1,5 +1,11 @@
 typedef Response HttpSend(Request request);
 
+class ApiState {
+  final HttpSend send;
+  final String token;
+  const ApiState(this.send, this.token);
+}
+
 Response send(Request request) {
   // Authentication Set
 

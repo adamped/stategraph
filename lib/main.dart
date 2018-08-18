@@ -5,7 +5,7 @@ import 'graph/renderGraph.dart';
 
 void main() {
  
-  StateGraph.instance.setInitialState(new DefaultLoginState());
+  StateGraph.setInitialState(new DefaultLoginState());
 
   runApp(new App());
 }
@@ -19,11 +19,11 @@ class _AppState extends State<App> {
  
   _AppState()
   {
-    StateGraph.instance.initialize(() => setState(()=> {}));
+    StateGraph.initialize(() => setState(()=> {}));
   }
 
   @override
   Widget build(BuildContext context) {
-    return RenderGraph.build(StateGraph.instance.current());
+    return RenderGraph.build(StateGraph.current());
   }
 }
