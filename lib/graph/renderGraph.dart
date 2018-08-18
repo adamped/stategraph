@@ -1,5 +1,5 @@
-import 'definitions.dart';
-import 'login.dart';
+import '../definitions.dart';
+import '../node/login.dart';
 import 'package:flutter/material.dart';
 
 class RenderGraph
@@ -7,6 +7,7 @@ class RenderGraph
   static RenderGraph _instance = new RenderGraph();
   static RenderGraph instance = _instance;
 
+  // Should all this logic be sent to the node or singular?
   Widget build(IState state)
   {
       // Compiled state management

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'stateGraph.dart';
-import 'login.dart';
-import 'renderGraph.dart';
+import 'graph/stateGraph.dart';
+import 'node/login.dart';
+import 'graph/renderGraph.dart';
 
 void main() {
  
-  StateGraph.instance.setInitialState(new LoginState());
+  StateGraph.instance.setInitialState(new DefaultLoginState());
 
   runApp(new App());
 }

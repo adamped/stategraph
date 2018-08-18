@@ -1,4 +1,8 @@
-import 'definitions.dart';
+import '../definitions.dart';
+import '../repository/api.dart';
+import '../repository/account.dart';
+
+typedef IState HttpRequest(HttpSend httpSend);
 
 class StateGraph
 {
@@ -25,10 +29,18 @@ class StateGraph
           _state.add(state);
 
      _triggerBuild();
-
   }
+
+
+  applyLoginRequest(IState command(LoginRequest loginRequest, String username, String password), String username, String password)
+  {
+    apply(command(loginRequestPartial, username, password));
+  }
+
 
   IState current() {
     return _state[_state.length - 1];
   }
+
+
 }

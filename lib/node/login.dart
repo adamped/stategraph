@@ -1,6 +1,8 @@
-import 'definitions.dart';
+import '../definitions.dart';
 import 'package:flutter/material.dart';
-import 'stateGraph.dart';
+import '../graph/stateGraph.dart';
+import '../repository/api.dart';
+import '../repository/account.dart';
 
 class DefaultLoginState implements IState {
   @override
@@ -14,23 +16,31 @@ class LoginErrorState extends DefaultLoginState {
 class LoginNode {
   static Widget render(IState state) {
     if (state is LoginErrorState)
-      return new Center(
+      return Center(
           child:
               Text(state.loginErrorMessage, textDirection: TextDirection.ltr));
     else
-      return new Center(
+      return Center(
           child: FlatButton(
         child: Text(
           'Login',
           textDirection: TextDirection.ltr,
           style: TextStyle(color: Colors.white),
         ),
-        onPressed: () => loginButtonPressed(state),
+        onPressed: () => StateGraph.instance.applyLoginRequest(login, "username", "password"),
       ));
   }
 
-  static loginButtonPressed(IState state) {
-    // Do some logic
-    StateGraph.instance.apply(new LoginErrorState());
+  static IState login(LoginRequest loginRequest, HttpSend send, String username, String password) {
+        
+    final result = loginRequest(send, username, password);
+
+    if (result == false)
+    {
+      // Do some logic
+      return LoginErrorState();
+    }
+
+    return DefaultLoginState();
   }
 }
