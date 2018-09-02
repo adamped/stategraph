@@ -1,17 +1,13 @@
 import '../definitions.dart';
 import 'package:flutter/material.dart';
 import '../graph/stateGraph.dart';
-import '../graph/renderGraph.dart';
 import '../repository/account.dart';
 
 class DefaultLoginState implements IState {
-  String transitionKey = "";
-  @override
   Branch branch = Branch.login;
 }
 
 class LoginErrorState extends DefaultLoginState {
-  String transitionKey = PageSlideTransition;
   String loginErrorMessage = "There was an error";
 }
 
@@ -30,11 +26,9 @@ class LoginNode {
           child: Center(
               child: Column(
             children: <Widget>[
-              Hero(
-                  tag: 'imageHero',
-                  child: Image.network(
-                    'https://flutter.io/images/flutter-mark-square-100.png',
-                  )),
+              Image.network(
+                'https://flutter.io/images/flutter-mark-square-100.png',
+              ),
               Text(state.loginErrorMessage,
                   textDirection: TextDirection.ltr,
                   style: TextStyle(color: Colors.white))
@@ -45,11 +39,9 @@ class LoginNode {
           padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
           child: Center(
               child: Column(children: <Widget>[
-            Hero(
-                tag: 'imageHero',
-                child: Image.network(
-                  'https://flutter.io/images/flutter-mark-square-100.png',
-                )),
+            Image.network(
+              'https://flutter.io/images/flutter-mark-square-100.png',
+            ),
             FlatButton(
               child: Text(
                 'Login',

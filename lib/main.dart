@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'graph/stateGraph.dart';
 import 'node/login.dart';
 import 'graph/renderGraph.dart';
-import 'definitions.dart';
 import 'dart:async';
 
 void main() {
@@ -42,12 +41,7 @@ class _AppState extends State<App>
 
   @override
   didPopRoute() {
-    StateGraph.apply(ReverseState());
+    StateGraph.reverse();
     return Future<bool>.value(true);
   }
-}
-
-class ReverseState implements IState {
-  String transitionKey = "";
-  Branch branch = Branch.reverse;
 }

@@ -13,12 +13,13 @@ class StateGraph {
     _state.add(state);
   }
 
-  static apply(IState state) {
-    if (state.branch == Branch.reverse)
-      _state.removeAt(_state.length - 1);
-    else
-      _state.add(state);
+  static reverse() {
+    _state.removeAt(_state.length - 1);
+    _triggerBuild();
+  }
 
+  static apply(IState state) {
+    _state.add(state);
     _triggerBuild();
   }
 

@@ -2,10 +2,12 @@ import '../definitions.dart';
 import '../node/login.dart';
 import 'package:flutter/material.dart';
 
-const String PageSlideTransition = "PageSlideTransition";
+abstract class Transition {
+  Widget create(Animation<double> animation, Widget from, Widget to);
+}
 
-class PageSlideTransitionBuild {
-  static Widget create(Animation<double> animation, Widget from, Widget to) {
+class PageSlideTransition implements Transition {
+  Widget create(Animation<double> animation, Widget from, Widget to) {
     return Stack(textDirection: TextDirection.ltr, children: <Widget>[
       SlideTransition(
         position: Tween<Offset>(
@@ -27,6 +29,7 @@ class PageSlideTransitionBuild {
 
 class RenderGraph {
   static Widget _current;
+  static AnimationController _animationController;
   static TickerProviderStateMixin _state;
 
   static initialize(TickerProviderStateMixin state) {
@@ -34,36 +37,36 @@ class RenderGraph {
   }
 
   static Widget build(IState state) {
-    var newWidget = _build(state);
+    var buildState = _build(state);
 
     if (_current == null) {
-      _current = newWidget;
-      return newWidget;
+      _current = buildState.widget;
+      return _current;
     } else {
-      if (state.transitionKey == PageSlideTransition) {
-        var animationController = new AnimationController(
+      if (buildState.transition is PageSlideTransition) {
+        _animationController = new AnimationController(
             vsync: _state, duration: const Duration(milliseconds: 1000));
 
-        var send = PageSlideTransitionBuild.create(
-            animationController, _current, newWidget);
+        var transition = (buildState.transition as PageSlideTransition)
+            .create(_animationController, _current, buildState.widget);
 
-        _current = newWidget;
+        _current = buildState.widget;
 
-        animationController.forward();
-        return send;
-      }
-      else
-      {
-        return newWidget;
+        _animationController.forward();
+        return transition;
+      } else {
+        return buildState.widget;
       }
     }
   }
 
-  static Widget _build(IState state) {
+  static WidgetState _build(IState state) {
     // Compiled state management
-    if (state.branch == Branch.login) return LoginNode.render(state);
+    if (state.branch == Branch.login)
+      return WidgetState(LoginNode.render(state),
+          transition: PageSlideTransition());
 
-    return _unknownState();
+    return WidgetState(_unknownState());
   }
 
   static Widget _unknownState() {
@@ -71,4 +74,11 @@ class RenderGraph {
         child:
             Text('Entered an unknown state', textDirection: TextDirection.ltr));
   }
+}
+
+class WidgetState {
+  WidgetState(this.widget, {this.transition});
+
+  final Widget widget;
+  final Transition transition;
 }
