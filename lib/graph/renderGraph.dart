@@ -2,7 +2,9 @@ import '../definitions.dart';
 import '../node/login.dart';
 import 'package:flutter/material.dart';
 
-class PageSlideTransition {
+const String PageSlideTransition = "PageSlideTransition";
+
+class PageSlideTransitionBuild {
   static Widget create(Animation<double> animation, Widget from, Widget to) {
     return Stack(textDirection: TextDirection.ltr, children: <Widget>[
       SlideTransition(
@@ -38,16 +40,22 @@ class RenderGraph {
       _current = newWidget;
       return newWidget;
     } else {
-      var animationController = new AnimationController(
-          vsync: _state, duration: const Duration(milliseconds: 1000));
+      if (state.transitionKey == PageSlideTransition) {
+        var animationController = new AnimationController(
+            vsync: _state, duration: const Duration(milliseconds: 1000));
 
-      var send =
-          PageSlideTransition.create(animationController, _current, newWidget);
+        var send = PageSlideTransitionBuild.create(
+            animationController, _current, newWidget);
 
-      _current = newWidget;
+        _current = newWidget;
 
-      animationController.forward();
-      return send;
+        animationController.forward();
+        return send;
+      }
+      else
+      {
+        return newWidget;
+      }
     }
   }
 

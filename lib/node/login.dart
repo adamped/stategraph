@@ -1,14 +1,17 @@
 import '../definitions.dart';
 import 'package:flutter/material.dart';
 import '../graph/stateGraph.dart';
+import '../graph/renderGraph.dart';
 import '../repository/account.dart';
 
 class DefaultLoginState implements IState {
+  String transitionKey = "";
   @override
   Branch branch = Branch.login;
 }
 
 class LoginErrorState extends DefaultLoginState {
+  String transitionKey = PageSlideTransition;
   String loginErrorMessage = "There was an error";
 }
 

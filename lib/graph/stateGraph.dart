@@ -15,7 +15,7 @@ class StateGraph {
 
   static apply(IState state) {
     if (state.branch == Branch.reverse)
-      _state.removeAt(_state.length);
+      _state.removeAt(_state.length - 1);
     else
       _state.add(state);
 
