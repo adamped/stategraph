@@ -17,21 +17,48 @@ typedef IState LoginFunction(
 
 class LoginNode {
   static Widget render(IState state) {
+    return _render(state);
+  }
+
+  static Widget _render(IState state) {
     if (state is LoginErrorState)
-      return Center(
-          child:
-              Text(state.loginErrorMessage, textDirection: TextDirection.ltr));
+      return Container(
+          padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
+          child: Center(
+              child: Column(
+            children: <Widget>[
+              Hero(
+                  tag: 'imageHero',
+                  child: Image.network(
+                    'https://flutter.io/images/flutter-mark-square-100.png',
+                  )),
+              Text(state.loginErrorMessage,
+                  textDirection: TextDirection.ltr,
+                  style: TextStyle(color: Colors.white))
+            ],
+          )));
     else
-      return Center(
-          child: FlatButton(
-        child: Text(
-          'Login',
-          textDirection: TextDirection.ltr,
-          style: TextStyle(color: Colors.white),
-        ),
-        onPressed: () => StateGraph
-            .apply(login(Account.login(StateGraph.apiState()), "username", "password")),
-      ));
+      return Container(
+          padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
+          child: Center(
+              child: Column(children: <Widget>[
+            Hero(
+                tag: 'imageHero',
+                child: Image.network(
+                  'https://flutter.io/images/flutter-mark-square-100.png',
+                )),
+            FlatButton(
+              child: Text(
+                'Login',
+                textDirection: TextDirection.ltr,
+                style: TextStyle(color: Colors.white),
+              ),
+              onPressed: () => StateGraph.apply(login(
+                  Account.login(StateGraph.apiState()),
+                  "username",
+                  "password")),
+            )
+          ])));
   }
 
   static IState login(

@@ -1,29 +1,25 @@
 import '../definitions.dart';
 import '../repository/api.dart';
 
-class StateGraph
-{
+class StateGraph {
   static StateSet _triggerBuild;
 
   static List<IState> _state = new List<IState>();
-  static initialize(StateSet setState)
-  {
+  static initialize(StateSet setState) {
     _triggerBuild = setState;
   }
 
-  static setInitialState(IState state)
-  {
+  static setInitialState(IState state) {
     _state.add(state);
   }
 
-  static apply(IState state)
-  {
-      if (state.branch == Branch.reverse)
-          _state.removeAt(_state.length);
-      else
-          _state.add(state);
+  static apply(IState state) {
+    if (state.branch == Branch.reverse)
+      _state.removeAt(_state.length);
+    else
+      _state.add(state);
 
-     _triggerBuild();
+    _triggerBuild();
   }
 
   // Get token from state graph
@@ -32,5 +28,4 @@ class StateGraph
   static IState current() {
     return _state[_state.length - 1];
   }
-
 }

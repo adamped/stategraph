@@ -15,15 +15,16 @@ class App extends StatefulWidget {
   _AppState createState() => new _AppState();
 }
 
-class _AppState extends State<App> {
+class _AppState extends State<App> with TickerProviderStateMixin {
  
   _AppState()
   {
+    RenderGraph.initialize(this);
     StateGraph.initialize(() => setState(()=> {}));
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {    
     return RenderGraph.build(StateGraph.current());
   }
 }
