@@ -1,5 +1,6 @@
-abstract class IState {
+class StateTransition {
     Branch branch;
+    bool reverse = false;
 }
 
 typedef void StateSet();

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../graph/stateGraph.dart';
 import '../repository/account.dart';
 
-class DefaultLoginState implements IState {
+class DefaultLoginState extends StateTransition {
   Branch branch = Branch.login;
 }
 
@@ -11,15 +11,15 @@ class LoginErrorState extends DefaultLoginState {
   String loginErrorMessage = "There was an error";
 }
 
-typedef IState LoginFunction(
+typedef StateTransition LoginFunction(
     LoginRequest loginRequest, String username, String password);
 
 class LoginNode {
-  static Widget render(IState state) {
+  static Widget render(StateTransition state) {
     return _render(state);
   }
 
-  static Widget _render(IState state) {
+  static Widget _render(StateTransition state) {
     if (state is LoginErrorState)
       return Container(
           padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
@@ -56,7 +56,7 @@ class LoginNode {
           ])));
   }
 
-  static IState login(
+  static StateTransition login(
       LoginRequest loginRequest, String username, String password) {
     final result = loginRequest(username, password);
 

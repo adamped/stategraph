@@ -3,22 +3,22 @@ import '../node/login.dart';
 import 'package:flutter/material.dart';
 
 abstract class Transition {
-  Widget create(Animation<double> animation, Widget from, Widget to);
+  Widget create(Animation<double> animation, Widget from, Widget to, bool reverse);
 }
 
 class PageSlideTransition implements Transition {
-  Widget create(Animation<double> animation, Widget from, Widget to) {
+  Widget create(Animation<double> animation, Widget from, Widget to, bool reverse) {
     return Stack(textDirection: TextDirection.ltr, children: <Widget>[
       SlideTransition(
         position: Tween<Offset>(
           begin: Offset.zero,
-          end: const Offset(-1.0, 0.0),
+          end: Offset(reverse ? 1.0 : -1.0, 0.0),
         ).animate(animation),
         child: from,
       ),
       SlideTransition(
         position: Tween<Offset>(
-          begin: const Offset(1.0, 0.0),
+          begin: Offset(reverse ? -1.0 : 1.0, 0.0),
           end: Offset.zero,
         ).animate(animation),
         child: to,
@@ -36,7 +36,7 @@ class RenderGraph {
     _state = state;
   }
 
-  static Widget build(IState state) {
+  static Widget build(StateTransition state) {
     var buildState = _build(state);
 
     if (_current == null) {
@@ -48,11 +48,14 @@ class RenderGraph {
             vsync: _state, duration: const Duration(milliseconds: 1000));
 
         var transition = (buildState.transition as PageSlideTransition)
-            .create(_animationController, _current, buildState.widget);
+            .create(_animationController, _current, buildState.widget, state.reverse);
 
         _current = buildState.widget;
 
         _animationController.forward();
+
+        state.reverse = false;
+
         return transition;
       } else {
         return buildState.widget;
@@ -60,7 +63,7 @@ class RenderGraph {
     }
   }
 
-  static WidgetState _build(IState state) {
+  static WidgetState _build(StateTransition state) {
     // Compiled state management
     if (state.branch == Branch.login)
       return WidgetState(LoginNode.render(state),
