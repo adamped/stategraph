@@ -4,12 +4,12 @@ import '../repository/api.dart';
 class StateGraph {
   static StateSet _triggerBuild;
 
-  static List<StateTransition> _state = new List<StateTransition>();
+  static List<IState> _state = new List<IState>();
   static initialize(StateSet setState) {
     _triggerBuild = setState;
   }
 
-  static setInitialState(StateTransition state) {
+  static setInitialState(IState state) {
     _state.add(state);
   }
 
@@ -19,7 +19,7 @@ class StateGraph {
     _triggerBuild();
   }
 
-  static apply(StateTransition state) {
+  static apply(IState state) {
     _state.add(state);
     _triggerBuild();
   }
@@ -27,7 +27,7 @@ class StateGraph {
   // Get token from state graph
   static ApiState apiState() => ApiState(send, "token");
 
-  static StateTransition current() {
+  static IState current() {
     return _state[_state.length - 1];
   }
 }

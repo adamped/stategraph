@@ -1,4 +1,4 @@
-class StateTransition {
+class IState {
     Branch branch;
     bool reverse = false;
 }

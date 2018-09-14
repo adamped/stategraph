@@ -36,7 +36,7 @@ class RenderGraph {
     _state = state;
   }
 
-  static Widget build(StateTransition state) {
+  static Widget build(IState state) {
     var buildState = _build(state);
 
     if (_current == null) {
@@ -63,7 +63,7 @@ class RenderGraph {
     }
   }
 
-  static WidgetState _build(StateTransition state) {
+  static WidgetState _build(IState state) {
     // Compiled state management
     if (state.branch == Branch.login)
       return WidgetState(LoginNode.render(state),
